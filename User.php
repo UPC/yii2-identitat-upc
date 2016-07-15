@@ -9,29 +9,50 @@ use phpCAS;
 class User extends \yii\web\User
 {
     public $casServerVersion = '2.0';
+    public $casServerHostname = 'cas.upc.edu';
     public $casServerPort = 443;
-    public $casServerHostname = '';
+    public $casServerCA = '@upc/identitat/ca_bundle.crt';
     public $casServerUri = '';
+    public $casVerbose = false;
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         parent::init();
 
-        $this->assertRequired(['casServerVersion', 'casServerHostname', 'casServerPort'])
+        $this->assertRequired('casServerHostname');
+        $this->assertRequired('casServerPort');
+        $this->assertRequired('casServerVersion');
 
+        phpCAS::setVerbose($this->casVerbose);
         phpCAS::client($this->casServerVersion, $this->casServerHostname, $this->casServerPort, $this->casServerUri);
-        if (phpCAS::checkAuthentication())
-        {
+        if (empty($this->casServerCA)) {
+            phpCAS::setNoCasServerValidation();
+        }
+        else {
+            phpCAS::setCasServerCACert(Yii::getAlias($this->casServerCA));
+        }
+        if (phpCAS::checkAuthentication()) {
             $this->loadIdentity();
         }
     }
 
+    /**
+     * Force user authentication.
+     *
+     * @return IdentityInterface the identity object associated with the currently authenticated user.
+     */
     public function authenticate()
     {
         phpCAS::forceAuthentication();
         return $this->loadIdentity();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function logout($destroySession = true)
     {
         parent::logout(false);
@@ -49,12 +70,10 @@ class User extends \yii\web\User
         return $identity;
     }
 
-    private function assertRequired($attributes)
+    private function assertRequired($attribute)
     {
-        foreach($attributes as $attribute) {
-            if (empty($this->$attribute)) {
-                throw new InvalidConfigException("$attribute is required.");
-            }
+        if (empty($this->$attribute)) {
+            throw new InvalidConfigException("$attribute is required.");
         }
     }
 }
