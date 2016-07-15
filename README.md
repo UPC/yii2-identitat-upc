@@ -1,7 +1,7 @@
 yii2-identitat-upc
 ==================
 
-yii2-identitat-upc implementa la validació CAS contra el servidor de la UPC.
+yii2-identitat-upc implementa la validació CAS en el servidor de la UPC.
 
 Requisits
 ---------
@@ -16,25 +16,50 @@ La manera recomenada d'instal·lar aquesta extensió és mitjançant [composer](
 Cal que afegeixis
 
 ```json
-"require": {
-    ...
-    "upc/yii2-identitat-upc": "~1.0",
-    ...
-},
-
+"upc/yii2-identitat-upc": "~1.0",
 ```
 
-a la secció `require` de la teva aplicació `composer.json` file.
+a la secció `require` del fitxer `composer.json` de la teva aplicació.
 
-També cal que afegeixis el repositori `https://github.com/upc`
+També cal que afegeixis
 
 ```json
-"repositories": [
     {
         "url": "https://github.com/oteixido/yii2-identitat-upc.git",
         "type": "git"
     }
+```
+
+a la secció `repositories` del fitxer `composer.json` de la teva aplicació.
+
+Utilització
+-----------
+
+Configura el component `user`
+
+```php
+'user' => [
+    'class' => 'upc\identitat\User',
+    'identityClass' => 'app\models\User',
 ],
+```
+
+a la secció `components` del fitxer de coniguració de l'aplicació.
+
+Tamé cal modificar les accions `login` i `logout`.
+
+```php
+public function actionLogin()
+{
+    Yii::$app->user->login(Yii::$app->user->authenticate());
+    return $this->redirect(['site/index']);
+}
+
+public function actionLogout()
+{
+    Yii::$app->user->logout();
+    return $this->redirect(['site/index']);
+}
 ```
 
 Llicència
