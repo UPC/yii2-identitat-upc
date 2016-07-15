@@ -25,7 +25,7 @@ També cal que afegeixis
 
 ```json
     {
-        "url": "https://github.com/oteixido/yii2-identitat-upc.git",
+        "url": "https://github.com/upc/yii2-identitat-upc.git",
         "type": "git"
     }
 ```
