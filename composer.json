@@ -1,0 +1,22 @@
+{
+    "name": "upc/yii2-identitat-upc",
+    "description": "Extensió Yii2 que facilita l'autenticació CAS",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","cas","authentication"],
+    "license": "GPL-3.0",
+    "authors": [
+        {
+            "name": "Oriol Teixidó",
+            "email": "oriol.teixido@gmail.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "jasig/phpCAS": "~1.3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "upc\\identitat\\": ""
+        }
+    }
+}
