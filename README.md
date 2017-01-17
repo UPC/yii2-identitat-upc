@@ -49,12 +49,15 @@ Configura el component `user` a la secció `components` del fitxer de configurac
 ],
 ```
 
-Tamé cal modificar les accions `login` i `logout`.
+També cal modificar les accions `login` i `logout`.
 
 ```php
 public function actionLogin()
 {
-    Yii::$app->user->login(Yii::$app->user->authenticate());
+    $userIdentity = Yii::$app->user->authenticate();
+    if ($userIdentity != null) {
+        Yii::$app->user->login($userIdentity);
+    }
     return $this->redirect(['site/index']);
 }
 
