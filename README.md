@@ -35,7 +35,7 @@ a la secció `repositories` del fitxer `composer.json` de la teva aplicació.
 Utilització
 -----------
 
-Configura el component `user`
+Configura el component `user` a la secció `components` del fitxer de configuració de l'aplicació.
 
 ```php
 'user' => [
@@ -48,8 +48,6 @@ Configura el component `user`
     'casVerbose' => <CAS_VERBOSE>, // Default value false;
 ],
 ```
-
-a la secció `components` del fitxer de coniguració de l'aplicació.
 
 Tamé cal modificar les accions `login` i `logout`.
 
