@@ -82,7 +82,7 @@ public function actionLogout()
     return $this->redirect(['site/index']);
 }
 ```
-Finalment ens hem d'assegurar que la classe User introduida al camp identityClass de 'user' implementi l'interfaç 'IdentityInterace', i a continuació implementar els métodes d'aquest de manera que satisfaguin les necessitats de la nostra aplicació. Per exemple:
+Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi l'interfaç `IdentityInterace`.
 
 ```php
 	/**
