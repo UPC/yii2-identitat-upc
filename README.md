@@ -32,18 +32,8 @@ També cal que afegeixis
 
 a la secció `repositories` del fitxer `composer.json` de la teva aplicació.
 
-Un cop fet això, cal instalar les dependències.
-
-Si estàs treballant a una màquina virtual, executa la següent comanda:
-
 ```bash
 composer install
-```
-
-Si ja havies treballat prèviament amb l'aplicació, executa la següent comanda:
-
-```bash
-composer update
 ```
 
 Això crearà el directori `upc\yii2-identitat-upc` dins del directori `vendor` de la teva aplicació.
@@ -85,7 +75,7 @@ public function actionLogout()
 Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi l'interfaç `IdentityInterace`.
 
 ```php
-	/**
+   /**
      * @inheritdoc
      */
     public static function findIdentity($id)
