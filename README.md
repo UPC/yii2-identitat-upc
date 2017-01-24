@@ -32,32 +32,37 @@ També cal que afegeixis
 
 a la secció `repositories` del fitxer `composer.json` de la teva aplicació.
 
+```bash
+composer install
+```
+
+Això crearà el directori `upc\yii2-identitat-upc` dins del directori `vendor` de la teva aplicació.
+
 Utilització
 -----------
 
-Configura el component `user` a la secció `components` del fitxer de configuració de l'aplicació.
+Configura el component `user`
 
 ```php
 'user' => [
     'class' => 'upc\identitat\User',
     'identityClass' => 'app\models\User',
-    'casServerVersion' => '<CAS VERSION>', // Default value '2.0'
-    'casServerHostname' => '<CAS_SERVER HOSTNAME>', // Default value 'cas.upc.edu'
-    'casServerPort' => <CAS_SERVER_PORT>, // Default value 443
-    'casServerCA' => '<CAS_SERVER_CA>', // Default value '@upc/identitat/ca_bundle.crt'
-    'casVerbose' => <CAS_VERBOSE>, // Default value false;
+    'casServerVersion' => '2.0'
+    'casServerHostname' => 'cas.upc.edu'
+    'casServerPort' => 443
+    'casServerCA' => '@upc/identitat/ca_bundle.crt'
+    'casVerbose' => false;
 ],
 ```
 
-També cal modificar les accions `login` i `logout`.
+a la secció `components` del fitxer de coniguració de l'aplicació. El fitxer de configuració de l'aplicació es troba normalment a `app\config`.
+
+A continuació cal modificar les accions `actionLogin` i `actionLogout` (normalment localitzades a `SiteController`).
 
 ```php
 public function actionLogin()
 {
-    $userIdentity = Yii::$app->user->authenticate();
-    if ($userIdentity != null) {
-        Yii::$app->user->login($userIdentity);
-    }
+    Yii::$app->user->login(Yii::$app->user->authenticate());
     return $this->redirect(['site/index']);
 }
 
@@ -67,6 +72,50 @@ public function actionLogout()
     return $this->redirect(['site/index']);
 }
 ```
+Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi l'interfaç `IdentityInterace`.
+
+```php
+   /**
+     * @inheritdoc
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne(['username' => $id]);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+   {
+       throw new NotSupportedException("findIdentityByAccessToken not implemented");
+   }
+
+   /**
+    * @inheritdoc
+    */
+   public function getId()
+   {
+       return $this->username;
+   }
+
+   /**
+    * @inheritdoc
+    */
+   public function getAuthKey()
+   {
+       throw new NotSupportedException("getAuthKey not implemented");
+   }
+
+   /**
+    * @inheritdoc
+    */
+   public function validateAuthKey($authKey)
+   {
+       throw new NotSupportedException("validateAuthKey not implemented");
+   }
+```
+
 
 Llicència
 ---------
