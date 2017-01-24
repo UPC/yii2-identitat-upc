@@ -3,6 +3,8 @@
 namespace upc\identitat;
 
 use Yii;
+use  yii\base\InvalidConfigException;
+
 
 use phpCAS;
 
