@@ -72,7 +72,7 @@ public function actionLogout()
     return $this->redirect(['site/index']);
 }
 ```
-Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi el mètode findByUsername() i  l'interfaç `IdentityInterace`.
+Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi el mètode `findByUsername()` i  l'interfaç `IdentityInterace`.
 
 ```php
     /**
