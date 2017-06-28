@@ -1,5 +1,4 @@
 <?php
-
 namespace upc\identitat;
 
 use Yii;
@@ -23,12 +22,9 @@ class DummyUser extends \yii\web\User
     public function init()
     {
         parent::init();
-
         $this->assertRequired('casServerHostname');
         $this->assertRequired('casServerPort');
         $this->assertRequired('casServerVersion');
-
-
     }
 
     /**
@@ -55,7 +51,7 @@ class DummyUser extends \yii\web\User
         $class = $this->identityClass;
         $identity = $class::findByUsername('admin');
         if ($identity == null) {
-            throw new \Exception('Usuari no trobat');
+            throw new \Exception('User not found.');
         }
         $this->setIdentity($identity);
         return $identity;
