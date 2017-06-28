@@ -72,9 +72,20 @@ public function actionLogout()
     return $this->redirect(['site/index']);
 }
 ```
-Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi l'interfaç `IdentityInterace`.
+Finalment ens hem d'assegurar que la classe  introduïda al camp  `identityClass` de `user` implementi el mètode findByUsername() i  l'interfaç `IdentityInterace`.
 
 ```php
+    /**
+     * Finds an identity by the given username.
+     *
+     * @param string $username the username to be looked for
+     * @return IdentityInterface|null the identity object that matches the given username.
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username]);
+    }
+
    /**
      * @inheritdoc
      */

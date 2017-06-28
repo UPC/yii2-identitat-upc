@@ -8,7 +8,7 @@ use  yii\base\InvalidConfigException;
 
 use phpCAS;
 
-class User extends \yii\web\User
+class DummyUser extends \yii\web\User
 {
     public $casServerVersion = '2.0';
     public $casServerHostname = 'cas.upc.edu';
@@ -28,17 +28,7 @@ class User extends \yii\web\User
         $this->assertRequired('casServerPort');
         $this->assertRequired('casServerVersion');
 
-        phpCAS::setVerbose($this->casVerbose);
-        phpCAS::client($this->casServerVersion, $this->casServerHostname, $this->casServerPort, $this->casServerUri);
-        if (empty($this->casServerCA)) {
-            phpCAS::setNoCasServerValidation();
-        }
-        else {
-            phpCAS::setCasServerCACert(Yii::getAlias($this->casServerCA));
-        }
-        if (phpCAS::checkAuthentication()) {
-            $this->loadIdentity();
-        }
+
     }
 
     /**
@@ -48,7 +38,6 @@ class User extends \yii\web\User
      */
     public function authenticate()
     {
-        phpCAS::forceAuthentication();
         return $this->loadIdentity();
     }
 
@@ -58,16 +47,16 @@ class User extends \yii\web\User
     public function logout($destroySession = true)
     {
         parent::logout(false);
-        if (phpCAS::checkAuthentication()) {
-            phpCAS::logout();
-        }
-        return $this->getIsGuest;
+        return true;
     }
 
     private function loadIdentity()
     {
         $class = $this->identityClass;
-        $identity = $class::findIdentity(phpCAS::getUser());
+        $identity = $class::findByUsername('admin');
+        if ($identity == null) {
+            throw new \Exception('Usuari no trobat');
+        }
         $this->setIdentity($identity);
         return $identity;
     }

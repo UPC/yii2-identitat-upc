@@ -67,7 +67,7 @@ class User extends \yii\web\User
     private function loadIdentity()
     {
         $class = $this->identityClass;
-        $identity = $class::findIdentity(phpCAS::getUser());
+        $identity = $class::findByUsername(phpCAS::getUser());
         $this->setIdentity($identity);
         return $identity;
     }
