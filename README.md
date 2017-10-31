@@ -16,7 +16,7 @@ La manera recomenada d'instal·lar aquesta extensió és mitjançant [composer](
 Cal que afegeixis
 
 ```json
-"upc/yii2-identitat-upc": "~0.1.0",
+"upc/yii2-identitat-upc": "~0.2.0",
 ```
 
 a la secció `require` del fitxer `composer.json` de la teva aplicació.
