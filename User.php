@@ -36,9 +36,6 @@ class User extends \yii\web\User
         else {
             phpCAS::setCasServerCACert(Yii::getAlias($this->casServerCA));
         }
-        if (phpCAS::checkAuthentication()) {
-            $this->loadIdentity();
-        }
     }
 
     /**
