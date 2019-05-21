@@ -5,17 +5,17 @@ namespace upc\identitat;
 use Yii;
 use  yii\base\InvalidConfigException;
 
-
 use phpCAS;
 
 class User extends \yii\web\User
 {
-    public $casServerVersion = '2.0';
-    public $casServerHostname = 'cas.upc.edu';
-    public $casServerPort = 443;
-    public $casServerCA = '@upc/identitat/ca_bundle.crt';
-    public $casServerUri = '';
-    public $casVerbose = false;
+    public $serverHostname= '';
+    public $serverUri = '';
+    public $serverVersion = '2.0';
+    public $serverPort = 443;
+    public $serverCA = false;
+    public $verbose = false;
+    public $testUser = null;
 
     /**
      * @inheritdoc
@@ -23,18 +23,21 @@ class User extends \yii\web\User
     public function init()
     {
         parent::init();
+        $this->assertRequired('serverHostname');
+        $this->assertRequired('serverPort');
+        $this->assertRequired('serverVersion');
 
-        $this->assertRequired('casServerHostname');
-        $this->assertRequired('casServerPort');
-        $this->assertRequired('casServerVersion');
+        if ($this->testUser != null) {
+            return;
+        }
 
-        phpCAS::setVerbose($this->casVerbose);
-        phpCAS::client($this->casServerVersion, $this->casServerHostname, $this->casServerPort, $this->casServerUri);
-        if (empty($this->casServerCA)) {
+        phpCAS::setVerbose($this->verbose);
+        phpCAS::client($this->serverVersion, $this->serverHostname, $this->serverPort, $this->serverUri);
+        if (empty($this->serverCA)) {
             phpCAS::setNoCasServerValidation();
         }
         else {
-            phpCAS::setCasServerCACert(Yii::getAlias($this->casServerCA));
+            phpCAS::setserverCACert(Yii::getAlias($this->serverCA));
         }
     }
 
@@ -45,6 +48,9 @@ class User extends \yii\web\User
      */
     public function authenticate()
     {
+        if ($this->testUser != null) {
+            return $this->loadIdentity();
+        }
         phpCAS::forceAuthentication();
         return $this->loadIdentity();
     }
@@ -55,6 +61,11 @@ class User extends \yii\web\User
     public function logout($destroySession = true)
     {
         parent::logout(false);
+
+        if ($this->testUser != null) {
+            return true;
+        }
+
         if (phpCAS::checkAuthentication()) {
             phpCAS::logout();
         }
@@ -64,7 +75,7 @@ class User extends \yii\web\User
     private function loadIdentity()
     {
         $class = $this->identityClass;
-        $identity = $class::findByUsername(phpCAS::getUser());
+        $identity = $class::findByUsername($this->testUser == null ? phpCAS::getUser() : $this->testUser);
         $this->setIdentity($identity);
         return $identity;
     }

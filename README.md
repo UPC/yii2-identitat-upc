@@ -16,21 +16,10 @@ La manera recomenada d'instal·lar aquesta extensió és mitjançant [composer](
 Cal que afegeixis
 
 ```json
-"upc/yii2-identitat-upc": "~0.2.0",
+"upc/yii2-identitat-upc": "*",
 ```
 
 a la secció `require` del fitxer `composer.json` de la teva aplicació.
-
-També cal que afegeixis
-
-```json
-    {
-        "url": "https://github.com/upc/yii2-identitat-upc.git",
-        "type": "git"
-    }
-```
-
-a la secció `repositories` del fitxer `composer.json` de la teva aplicació.
 
 ```bash
 composer install
