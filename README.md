@@ -36,11 +36,13 @@ Configura el component `user`
 'user' => [
     'class' => 'upc\identitat\User',
     'identityClass' => 'app\models\User',
-    'casServerVersion' => '2.0'
-    'casServerHostname' => 'cas.upc.edu'
-    'casServerPort' => 443
-    'casServerCA' => '@upc/identitat/ca_bundle.crt'
-    'casVerbose' => false;
+    'serverHostname' => 'sso.upc.edu',
+    'serverUri' => 'CAS', // Defaults to ""
+    'serverVersion' => '2.0', // Defaults to 2.0
+    'serverPort' => 443, // Defaults to 443
+    'serverCA' => '@upc/identitat/ca_bundle.crt', // Defaults to false
+    'verbose' => false, // Defaults to false
+    // 'testUser' => 'username' // Defaults to false
 ],
 ```
 

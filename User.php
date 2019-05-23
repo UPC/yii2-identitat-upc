@@ -15,7 +15,7 @@ class User extends \yii\web\User
     public $serverPort = 443;
     public $serverCA = false;
     public $verbose = false;
-    public $testUser = null;
+    public $testUser = false;
 
     /**
      * @inheritdoc
@@ -27,7 +27,7 @@ class User extends \yii\web\User
         $this->assertRequired('serverPort');
         $this->assertRequired('serverVersion');
 
-        if ($this->testUser != null) {
+        if ($this->testUser) {
             return;
         }
 
@@ -48,8 +48,8 @@ class User extends \yii\web\User
      */
     public function authenticate()
     {
-        if ($this->testUser != null) {
-            return $this->loadIdentity();
+        if ($this->testUser) {
+          return $this->loadIdentity();
         }
         phpCAS::forceAuthentication();
         return $this->loadIdentity();
@@ -62,7 +62,7 @@ class User extends \yii\web\User
     {
         parent::logout(false);
 
-        if ($this->testUser != null) {
+        if ($this->testUser) {
             return true;
         }
 
@@ -75,7 +75,7 @@ class User extends \yii\web\User
     private function loadIdentity()
     {
         $class = $this->identityClass;
-        $identity = $class::findByUsername($this->testUser == null ? phpCAS::getUser() : $this->testUser);
+        $identity = $class::findByUsername($this->testUser ? $this->testUser : phpCAS::getUser());
         $this->setIdentity($identity);
         return $identity;
     }
